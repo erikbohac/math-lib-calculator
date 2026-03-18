@@ -1,0 +1,28 @@
+Termíny:
+
+19.3. Makefile
+22.3. Testy
+25.3. Matematická knihovna
+28.3. Profiling
+12.4. GUI
+19.4. Integrace GUI/knihovny
+26.4. Instalátor
+28.4. Uživatelská dokumentace
+28.4. Mockup
+29.4. Kontrola a odevzdání
+
+Rozdělení práce:
+
+Erik Boháč (xbohace00) - Testy, Makefile, Integrace GUI/knihovny, Správa repozitáře
+
+Dominik Dusbaba (xdusbad00) - Dokumentace, Instalátor, Profiling
+
+Patrik Kadlec (xkadlep00) - Matematická knihovna, GUI, Mockup, Plán
+
+Komunikace:
+Pro komunikaci mezi členy týmu je již založen server na platformě Discord. Zde bude probíhat nejen textová komunikace, ale i online schůzky dle potřeby.
+
+Správa verzí:
+Pro správu verzí bude využit Github
+
+Odkaz na repozitář: https://github.com/erikbohac/math-lib-calculator
