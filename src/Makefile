@@ -1,5 +1,5 @@
-CXX = g++ 
-CXXFLAGS = -Wall -Wextra -pedantic --std=c++23 -I ../include
+CXX = g+++
+CXXFLAGS = -Wall -Wextra -pedantic --std=c++23 -I .
 LDLIBS = -lm
 
 EXECS = math-lib
@@ -7,7 +7,10 @@ EXECS = math-lib
 MATH_SRCS = $(wildcard ./core/*.cpp)
 MATH_OBJS = $(MATH_SRCS:.cpp=.o)
 
-.PHONY = all #pack clean test doc run stddev help
+TEST_SRCS = $(wildcard ./test/*.cpp)
+TEST_OBJS = $(TEST_SRCS:.cpp=.o)
+
+.PHONY = all clean test #pack doc run stddev help
 
 all: $(EXECS)
 
@@ -20,10 +23,13 @@ math-lib: $(MATH_OBJS)
 #pack:
 
 
-#clean:
+clean:
+	rm -f $(MATH_OBJS) $(TEST_OBJS) $(EXECS) run_tests
 
 
-#test:
+test: $(MATH_OBJS) $(TEST_OBJS)
+	$(CXX) $(CXXFLAGS) -o run_tests $^ -lgtest -lgtest_main -pthread
+	./run_tests
 
 
 #doc:
@@ -36,6 +42,3 @@ math-lib: $(MATH_OBJS)
 
 
 #help:
-
-
-
