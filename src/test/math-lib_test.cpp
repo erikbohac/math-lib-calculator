@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <stdexcept>
 #include <climits>
-#include "core/math-lib.h"
+#include "core/mathlib.h"
 
 
 constexpr long double TOL_EXACT = 0.0L;
