@@ -95,6 +95,9 @@ long double factorial(long double a)
  */
 long double power(long double a, long double b)
 {
+    if (a == 0 && b == 0){
+        throw std::domain_error("Undefined operation");
+    }
     if (fmod(b, 1) == 0)
     {
         return pow(a, b);
