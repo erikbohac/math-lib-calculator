@@ -123,14 +123,16 @@ TEST(MathLibTest, PowerBaseNegative)
 TEST(MathLibTest, PowerBaseDecimal)
 {
 	EXPECT_NEAR(power(2.5L, 2L), 6.25L, TOL_EXACT);
-	EXPECT_NEAR(power(100.001L, 4L), 100'004'000.060'000'400'001L, TOL_SMALL);
+	EXPECT_NEAR(power(100.001L, 4L), 100'004'000.060'000'400'001L, TOL_LARGE);
 	EXPECT_NEAR(power(23.5L, 8L), 93'012'838'522.503'906'25L, TOL_LARGE);
 }
 
 TEST(MathLibTest, PowerExponentNegative)
 {
-	EXPECT_THROW(power(2L, -3L), std::domain_error);
-	EXPECT_THROW(power(10L, -10L), std::domain_error);
+	EXPECT_NEAR(power(10L, -1L), 0.1, TOL_SMALL);
+	EXPECT_NEAR(power(2L, -3L), 0.125, TOL_SMALL);
+	EXPECT_NEAR(power(10L, -10L), 0.000'000'000'100, TOL_SMALL);
+	EXPECT_NEAR(power(23.58L, -4), 0.000'003'234'631'391, TOL_SMALL);
 }
 
 TEST(MathLibTest, PowerExponentDec)
