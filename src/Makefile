@@ -2,45 +2,65 @@ CXX = g++
 CXXFLAGS = -Wall -Wextra -pedantic --std=c++23 -I .
 LDLIBS = -lm
 
-EXECS = math-lib
+BUILD_DIR = build
 
-MATH_SRCS = $(wildcard ./core/*.cpp)
-MATH_OBJS = $(MATH_SRCS:.cpp=.o)
+EXECS = $(BUILD_DIR)/stddev
+LIBS = $(BUILD_DIR)/libmath.a
 
+MATH_DIR = core
+STDDEV_DIR = stddev
 TEST_DIR = test
-TEST_EXE = $(TEST_DIR)/run_tests
-TEST_SRCS = $(wildcard ./$(TEST_DIR)/*.cpp)
-TEST_OBJS = $(TEST_SRCS:.cpp=.o)
+TEST_EXE = $(BUILD_DIR)/$(TEST_DIR)/run_tests
 
-.PHONY = all clean test #pack doc run stddev help
+MATH_SRCS = $(wildcard $(MATH_DIR)/*.cpp)
+MATH_OBJS = $(MATH_SRCS:%.cpp=$(BUILD_DIR)/%.o)
 
-all: $(EXECS)
+STDDEV_SRCS = $(wildcard $(STDDEV_DIR)/*.cpp)
+STDDEV_OBJS = $(STDDEV_SRCS:%.cpp=$(BUILD_DIR)/%.o)
 
-math-lib: $(MATH_OBJS)
-	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDLIBS)
+TEST_SRCS = $(wildcard $(TEST_DIR)/*.cpp)
+TEST_OBJS = $(TEST_SRCS:%.cpp=$(BUILD_DIR)/%.o)
 
-%.o: %.cpp
+.PHONY = all clean test help #pack doc run
+
+
+
+all: $(LIBS) $(EXECS)
+
+
+$(LIBS): $(MATH_OBJS)
+	rm -f $@
+	ar rcs $@ $^
+
+
+$(BUILD_DIR)/%.o: %.cpp
+	@mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-#pack:
 
 
 clean:
-	rm -f $(MATH_OBJS) $(TEST_OBJS) $(EXECS) $(TEST_EXE)
+	rm -rf $(BUILD_DIR)
 
 
-test: $(MATH_OBJS) $(TEST_OBJS)
-	$(CXX) $(CXXFLAGS) -o $(TEST_EXE) $^ -lgtest -lgtest_main -pthread
+test: $(LIBS) $(TEST_OBJS)
+	@mkdir -p $(dir $(TEST_EXE))
+	$(CXX) $(CXXFLAGS) -o $(TEST_EXE) $(TEST_OBJS) -L$(BUILD_DIR) -lmath -lgtest -lgtest_main -pthread $(LDLIBS)
 	./$(TEST_EXE)
 
 
-#doc:
+$(BUILD_DIR)/stddev: $(LIBS) $(STDDEV_OBJS)
+	$(CXX) $(CXXFLAGS) -o $@ $(STDDEV_OBJS) -L$(BUILD_DIR) -lmath $(LDLIBS)
 
 
-#run:
+help:
+	echo "TODO"
 
 
-#stddev:
+#doc
 
 
-#help:
+#run
+
+
+#pack
+
