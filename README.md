@@ -32,6 +32,7 @@ Requirements:
 - make
 - cmake
 - g++ compiler
+- doxygen (for documentation)
 
 ## Installation
 *TODO*
