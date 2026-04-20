@@ -27,6 +27,12 @@ Designed for **educational and general-purpose use**, the calculator includes an
 **Graphical Interfaces:**
 - Qt 6.10+
 
+### Building from source (for developers)
+Requirements:
+- make
+- cmake
+- g++ compiler
+
 ## Installation
 *TODO*
 
