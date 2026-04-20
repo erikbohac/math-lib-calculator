@@ -1,13 +1,126 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 
+#include <QMainWindow>
+#include <QPushButton>
 
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWindow)
 {
 	ui->setupUi(this);
+
+	// Propojím všechna číselná tlačítka na jeden slot
+
+    for (int i = 0; i <= 9; ++i) {
+        QString butName = "pushButton_" + QString::number(i);
+        QPushButton *button = findChild<QPushButton *>(butName);
+        if (button) {
+            connect(button, &QPushButton::clicked, this, &MainWindow::numberPressed);
+        }
+    }
+
+    connect(ui->pushButton_add, &QPushButton::clicked, this, &MainWindow::operatorPressed);
+    connect(ui->pushButton_delete, &QPushButton::clicked, this, &MainWindow::operatorPressed);
+    connect(ui->pushButton_divide, &QPushButton::clicked, this, &MainWindow::operatorPressed);
+    connect(ui->pushButton_dot, &QPushButton::clicked, this, &MainWindow::operatorPressed);
+    connect(ui->pushButton_factorial, &QPushButton::clicked, this, &MainWindow::operatorPressed);
+    connect(ui->pushButton_modulo, &QPushButton::clicked, this, &MainWindow::operatorPressed);
+    connect(ui->pushButton_multiply, &QPushButton::clicked, this, &MainWindow::operatorPressed);
+    connect(ui->pushButton_power, &QPushButton::clicked, this, &MainWindow::operatorPressed);
+    connect(ui->pushButton_root, &QPushButton::clicked, this, &MainWindow::operatorPressed);
+    connect(ui->pushButton_subtract, &QPushButton::clicked, this, &MainWindow::operatorPressed);
+
+    connect(ui->pushButton_sign, &QPushButton::clicked, this, &MainWindow::signPressed);
+    connect(ui->pushButton_calculate, &QPushButton::clicked, this, &MainWindow::calculatePressed);
+    connect(ui->pushButton_help, &QPushButton::clicked, this, &MainWindow::operatorPressed);
 }
 
 MainWindow::~MainWindow()
 {
 	delete ui;
+}
+
+void MainWindow::numberPressed()
+{
+    // Zjistíme, které tlačítko nás zavolalo
+    QPushButton *button = (QPushButton *)sender();
+
+    QString butVal = button->text();
+    QString displayVal = ui->Display->text();
+
+    if ((displayVal == "0") || (displayVal == "0.0")) {
+        ui->Display->setText(butVal);
+    } else {
+        QString newVal = displayVal + butVal;
+        ui->Display->setText(newVal);
+    }
+}
+
+void MainWindow::operatorPressed()
+{
+    QPushButton *button = qobject_cast<QPushButton*>(sender());
+    if (!button) return;
+
+    QString displayVal = ui->Display->text();
+    QString objName = button->objectName();
+    QString opSymbol;
+
+    // Mapování názvů tlačítek na symboly
+    if (objName == "pushButton_power") opSymbol = "^";
+    else if (objName == "pushButton_root") opSymbol = "√";
+    else if (objName == "pushButton_factorial") opSymbol = "!";
+    else if (objName == "pushButton_add") opSymbol = "+";
+    else if (objName == "pushButton_subtract") opSymbol = "-";
+    else if (objName == "pushButton_multiply") opSymbol = "*";
+    else if (objName == "pushButton_divide") opSymbol = "/";
+    else opSymbol = button->text(); // Záloha
+
+    ui->Display->setText(displayVal + opSymbol);
+}
+
+void MainWindow::signPressed()
+{
+    QString text = ui->Display->text();
+    if (text == "0" || text.isEmpty()) return;
+
+    int lastOpIndex = -1;
+
+    // Projdu text od konce a hledám poslední operátor
+    for (int i = text.length() - 1; i >= 0; --i) {
+        QChar c = text[i];
+
+        // Pokud narazím na něco, co není číslo ani tečka, je to operátor
+        if (!c.isDigit() && c != '.') {
+            // Speciální logika pro mínus:
+            // Musím poznat, jestli je to operátor nebo už existující znaménko
+            if (c == '-') {
+                // Pokud je před mínusem další operátor (nebo nic), je to znaménko
+                if (i == 0 || (!text[i-1].isDigit() && text[i-1] != '!' && text[i-1] != ')')) {
+                    lastOpIndex = i - 1; // Chceme měnit i s tímto znaménkem
+                    break;
+                }
+            }
+            lastOpIndex = i;
+            break;
+        }
+    }
+
+    // Rozdělím text na část před posledním číslem a na číslo samotné
+    QString prefix = text.left(lastOpIndex + 1);
+    QString lastNumber = text.mid(lastOpIndex + 1);
+
+    if (lastNumber.isEmpty()) return; // Pokud za operátorem ještě není číslo
+
+    // Změním znaménko u odseknutého čísla
+    if (lastNumber.startsWith("-")) {
+        lastNumber.remove(0, 1);
+    } else {
+        lastNumber.prepend("-");
+    }
+
+    ui->Display->setText(prefix + lastNumber);
+}
+
+void MainWindow::calculatePressed()
+{
+
 }

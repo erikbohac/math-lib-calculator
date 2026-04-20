@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
+#include <QPushButton>
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -18,6 +18,12 @@ class MainWindow : public QMainWindow
 	public:
 		explicit MainWindow(QWidget *parent = nullptr);
 		~MainWindow() override;
+
+	private slots:
+    	void numberPressed();    // Pro čísla 0-9
+    	void operatorPressed();  // Pro +, -, *...
+    	void signPressed();      // Pro +/-
+    	void calculatePressed(); // Pro výpočet
 
 	private:
 		Ui::MainWindow *ui;
