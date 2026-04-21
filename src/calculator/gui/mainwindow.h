@@ -5,7 +5,7 @@
 #include <QPushButton>
 
 QT_BEGIN_NAMESPACE
-namespace Ui
+namespace calc
 {
 	class MainWindow;
 }
