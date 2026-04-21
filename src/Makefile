@@ -22,7 +22,7 @@ TEST_EXE = $(patsubst %,$(BUILD_DIR)/%,$(TESTS_NAME))
 TEST_SRCS = $(wildcard $(TEST_DIR)/*.cpp)
 TEST_OBJS = $(TEST_SRCS:%.cpp=$(BUILD_DIR)/%.o)
 
-.PHONY = all clean test stddev help #pack doc run
+.PHONY = all clean test stddev help doc #pack run
 
 
 
@@ -57,7 +57,8 @@ help:
 	echo "TODO"
 
 
-#doc
+doc:
+	doxygen Doxyfile
 
 
 #run
