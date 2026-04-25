@@ -6,9 +6,9 @@
 
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWindow)
 {
-	ui->setupUi(this);
+    ui->setupUi(this);
 
-	// Propojím všechna číselná tlačítka na jeden slot
+    // Propojím všechna číselná tlačítka na jeden slot
 
     for (int i = 0; i <= 9; ++i) {
         QString butName = "pushButton_" + QString::number(i);
@@ -19,7 +19,6 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     }
 
     connect(ui->pushButton_add, &QPushButton::clicked, this, &MainWindow::operatorPressed);
-    connect(ui->pushButton_delete, &QPushButton::clicked, this, &MainWindow::operatorPressed);
     connect(ui->pushButton_divide, &QPushButton::clicked, this, &MainWindow::operatorPressed);
     connect(ui->pushButton_dot, &QPushButton::clicked, this, &MainWindow::operatorPressed);
     connect(ui->pushButton_factorial, &QPushButton::clicked, this, &MainWindow::operatorPressed);
@@ -29,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     connect(ui->pushButton_root, &QPushButton::clicked, this, &MainWindow::operatorPressed);
     connect(ui->pushButton_subtract, &QPushButton::clicked, this, &MainWindow::operatorPressed);
 
+    connect(ui->pushButton_delete, &QPushButton::clicked, this, &MainWindow::deletePressed);
     connect(ui->pushButton_sign, &QPushButton::clicked, this, &MainWindow::signPressed);
     connect(ui->pushButton_calculate, &QPushButton::clicked, this, &MainWindow::calculatePressed);
     connect(ui->pushButton_help, &QPushButton::clicked, this, &MainWindow::operatorPressed);
@@ -36,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
 
 MainWindow::~MainWindow()
 {
-	delete ui;
+    delete ui;
 }
 
 void MainWindow::numberPressed()
@@ -118,6 +118,68 @@ void MainWindow::signPressed()
     }
 
     ui->Display->setText(prefix + lastNumber);
+}
+
+void MainWindow::deletePressed()
+{
+    QString text = ui->Display->text();
+    text.chop(1);  // smaže poslední znak
+    ui->Display->setText(text);
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+    int key = event->key();
+
+    // ČÍSLA 0–9
+    if (key >= Qt::Key_0 && key <= Qt::Key_9) {
+        QString butName = "pushButton_" + QString::number(key - Qt::Key_0);
+        QPushButton *button = findChild<QPushButton *>(butName);
+        if (button) button->click();
+    }
+
+    // NUMPAD (klávesnice vpravo)
+    else if (key >= Qt::Key_0 && key <= Qt::Key_9) {
+        QString butName = "pushButton_" + QString::number(key - Qt::Key_0);
+        QPushButton *button = findChild<QPushButton *>(butName);
+        if (button) button->click();
+    }
+
+    // OPERÁTORY
+    else if (key == Qt::Key_Plus) {
+        QPushButton *button = findChild<QPushButton *>("pushButton_add");
+        if (button) button->click();
+    }
+    else if (key == Qt::Key_Minus) {
+        QPushButton *button = findChild<QPushButton *>("pushButton_subtract");
+        if (button) button->click();
+    }
+    else if (key == Qt::Key_Asterisk) {
+        QPushButton *button = findChild<QPushButton *>("pushButton_multiply");
+        if (button) button->click();
+    }
+    else if (key == Qt::Key_Slash) {
+        QPushButton *button = findChild<QPushButton *>("pushButton_divide");
+        if (button) button->click();
+    }
+
+    // ENTER = =
+    else if (key == Qt::Key_Return || key == Qt::Key_Enter) {
+        QPushButton *button = findChild<QPushButton *>("pushButton_calculate");
+        if (button) button->click();
+    }
+
+    // BACKSPACE = mazání
+    else if (key == Qt::Key_Backspace) {
+        QPushButton *button = findChild<QPushButton *>("pushButton_delete");
+        if (button) button->click();
+    }
+
+    // TEČKA
+    else if (key == Qt::Key_Period || key == Qt::Key_Comma) {
+        QPushButton *button = findChild<QPushButton *>("pushButton_dot");
+        if (button) button->click();
+    }
 }
 
 void MainWindow::calculatePressed()
