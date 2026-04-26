@@ -26,6 +26,7 @@ class MainWindow : public QMainWindow
     	void signPressed();      // Pro +/-
     	void calculatePressed(); // Pro výpočet
 		void deletePressed();    // Pro mazání
+		void helpPressed();      // Pro Help
 
 	protected:
     	void keyPressEvent(QKeyEvent *event) override;

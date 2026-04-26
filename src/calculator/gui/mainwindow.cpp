@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QMainWindow>
 #include <QPushButton>
+#include <QMessageBox>
 
 
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWindow)
@@ -31,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     connect(ui->pushButton_delete, &QPushButton::clicked, this, &MainWindow::deletePressed);
     connect(ui->pushButton_sign, &QPushButton::clicked, this, &MainWindow::signPressed);
     connect(ui->pushButton_calculate, &QPushButton::clicked, this, &MainWindow::calculatePressed);
-    connect(ui->pushButton_help, &QPushButton::clicked, this, &MainWindow::operatorPressed);
+    connect(ui->pushButton_help, &QPushButton::clicked, this, &MainWindow::helpPressed);
 }
 
 MainWindow::~MainWindow()
@@ -180,6 +181,16 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         QPushButton *button = findChild<QPushButton *>("pushButton_dot");
         if (button) button->click();
     }
+}
+
+void MainWindow::helpPressed()
+{
+    QMessageBox::information(this, "Help",
+        "Ovládání klávesnicí:\n"
+        "0–9 for numbers\n"
+        "+ - * / for operator\n"
+        "= for result\n"
+        "Root, power, modulo and factorial are accessible only through buttons");
 }
 
 void MainWindow::calculatePressed()
