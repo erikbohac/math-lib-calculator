@@ -28,6 +28,8 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     connect(ui->pushButton_power, &QPushButton::clicked, this, &MainWindow::operatorPressed);
     connect(ui->pushButton_root, &QPushButton::clicked, this, &MainWindow::operatorPressed);
     connect(ui->pushButton_subtract, &QPushButton::clicked, this, &MainWindow::operatorPressed);
+    connect(ui->pushButton_left, &QPushButton::clicked, this, &MainWindow::operatorPressed);
+    connect(ui->pushButton_right, &QPushButton::clicked, this, &MainWindow::operatorPressed);
 
     connect(ui->pushButton_delete, &QPushButton::clicked, this, &MainWindow::deletePressed);
     connect(ui->pushButton_sign, &QPushButton::clicked, this, &MainWindow::signPressed);
