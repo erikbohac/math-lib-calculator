@@ -50,29 +50,33 @@ std::vector<Token> Tokenizer::tokenize()
 		if(isdigit(c) || c == '.')
 		{
 			tokens.push_back(parseNumber());
+			prevType = TokenType::Number;
 		}
 		else if(strchr("+-*/%^!", c))
 		{
 			tokens.push_back(Token::operation(get()));
+			prevType = TokenType::Operator;
 		}
 		else if(c == 'r')
 		{
-			if(prevType == TokenType::Operator || prevType == TokenType::LParen || tokens.empty())
+			if(prevType != TokenType::Number)
 			{
-				Token two = Token::number(2.0);
-				tokens.push_back(two);
+				tokens.push_back(Token::number(2.0));
 			}
-
 			tokens.push_back(Token::operation(get()));
 			prevType = TokenType::Operator;
 		}
 		else if(c == '(')
 		{
-			get(); tokens.push_back({TokenType::LParen, 0, 0});
+			get();
+			tokens.push_back({TokenType::LParen, 0, 0});
+			prevType = TokenType::LParen;
 		}
 		else if(c == ')')
 		{
-			get(); tokens.push_back({TokenType::RParen, 0, 0});
+			get();
+			tokens.push_back({TokenType::RParen, 0, 0});
+			prevType = TokenType::RParen;
 		}
 		else
 		{
