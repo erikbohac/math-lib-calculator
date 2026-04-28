@@ -23,6 +23,9 @@ set(GUI_SOURCES
 
 add_library(calculator_engine STATIC
 	engine/calculator_engine.cpp
+	engine/tokenizer.cpp
+	engine/parser.cpp
+	engine/evaluator.cpp
 )
 
 add_executable(${CALC_NAME} ${GUI_SOURCES})
@@ -33,4 +36,10 @@ target_link_libraries(${CALC_NAME} PRIVATE
 	${MATH_LIB}
 )
 
-target_include_directories(${CALC_NAME} PRIVATE ${INCLUDE_DIR})
+target_include_directories(calculator_engine
+	PUBLIC
+		.
+	PRIVATE
+		${INCLUDE_DIR}
+)
+

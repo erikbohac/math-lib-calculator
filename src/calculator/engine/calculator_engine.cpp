@@ -1,40 +1,37 @@
 #include "calculator_engine.h"
+#include "tokenizer.h"
+#include "parser.h"
+#include "evaluator.h"
 
 
-double CalculatorEngine::evaluate(const std::string &expr)
+double CalculatorEngine::evaluate(const std::string& expression)
 {
-	size_t len = expr.length();
-    std::string norm = normalize(expr, len);
-    return compute(norm, len);
+	std::string normalized = CalculatorEngine::preprocess(expression);
+
+	Tokenizer tokenizer(normalized);
+	auto tokens = tokenizer.tokenize();
+
+	Parser parser(tokens);
+	auto rpn = parser.toRPN();
+
+	Evaluator evaluator;
+	return evaluator.evaluate(rpn);
 }
 
-std::string CalculatorEngine::normalize(const std::string &expr, size_t len)
+std::string CalculatorEngine::preprocess(const std::string& input)
 {
-	char prev_char = 0;
-	std::string norm_expr = "";
-	for(unsigned i = 0; i < len; ++i)
+	std::string out = input;
+
+	const std::string root_utf8 = "√";
+	const std::string root_internal = "r";
+
+	size_t pos = 0;
+	while((pos = out.find(root_utf8, pos)) != std::string::npos)
 	{
-		char curr_char = expr[i];
-
-		
-		if(curr_char == '(' && prev_char >= '0' && prev_char <= '9')
-		{
-			norm_expr += '*';
-		}
-
-		if(curr_char != ' ')
-		{
-			norm_expr += curr_char;
-		}
-
-		prev_char = curr_char;
+		out.replace(pos, root_utf8.length(), root_internal);
+		pos += root_internal.length();
 	}
 
-	return norm_expr;
-}
-
-double CalculatorEngine::compute(const std::string &expr, size_t len)
-{
-    // implementation here
+	return out;
 }
 

@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "engine/calculator_engine.h"
 #include <QMainWindow>
 #include <QPushButton>
 #include <QMessageBox>
@@ -213,7 +214,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 void MainWindow::helpPressed()
 {
     QMessageBox::information(this, "Help",
-        "Ovládání klávesnicí:\n"
+        "Keyboard controls:\n"
         "0–9 for numbers\n"
         "+ - * / for operator\n"
         "= for result\n"
@@ -222,5 +223,16 @@ void MainWindow::helpPressed()
 
 void MainWindow::calculatePressed()
 {
+	std::string input = ui->Display->text().toStdString();
 
+    try
+    {
+        double result = CalculatorEngine::evaluate(input);
+        ui->Display->setText(QString::number(result));
+    }
+    catch (const std::exception& e)
+    {
+		QMessageBox::warning(this, "Processing Error", QString::fromUtf8(e.what()));
+    }
 }
+

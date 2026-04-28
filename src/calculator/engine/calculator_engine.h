@@ -1,13 +1,14 @@
+#pragma once
+
 #include <string>
 
 
 class CalculatorEngine
 {
 	public:
-		double evaluate(const std::string &expr);
+		static double evaluate(const std::string& expression);
 
 	private:
-		std::string normalize(const std::string &expr, size_t len);
-		double compute(const std::string &expr, size_t len);
+		static std::string preprocess(const std::string& input);
 };
 
