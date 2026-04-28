@@ -3,11 +3,16 @@
 #include <QMainWindow>
 #include <QPushButton>
 #include <QMessageBox>
+#include <QClipboard>
+#include <QApplication>
 
 
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    ui->Display->setFocusPolicy(Qt::StrongFocus);
+    ui->Display->setTextInteractionFlags(Qt::TextSelectableByMouse);
 
     // Propojím všechna číselná tlačítka na jeden slot
 
@@ -28,6 +33,8 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     connect(ui->pushButton_power, &QPushButton::clicked, this, &MainWindow::operatorPressed);
     connect(ui->pushButton_root, &QPushButton::clicked, this, &MainWindow::operatorPressed);
     connect(ui->pushButton_subtract, &QPushButton::clicked, this, &MainWindow::operatorPressed);
+    connect(ui->pushButton_left, &QPushButton::clicked, this, &MainWindow::operatorPressed);
+    connect(ui->pushButton_right, &QPushButton::clicked, this, &MainWindow::operatorPressed);
 
     connect(ui->pushButton_delete, &QPushButton::clicked, this, &MainWindow::deletePressed);
     connect(ui->pushButton_sign, &QPushButton::clicked, this, &MainWindow::signPressed);
@@ -130,6 +137,26 @@ void MainWindow::deletePressed()
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
+    // CTRL+C
+    if (event->matches(QKeySequence::Copy)) {
+        QApplication::clipboard()->setText(ui->Display->text());
+        return;
+    }
+
+    // CTRL+V
+    if (event->matches(QKeySequence::Paste)) {
+        QString text = QApplication::clipboard()->text();
+        ui->Display->setText(text);
+        return;
+    }
+
+    // CTRL+X
+    if (event->matches(QKeySequence::Cut)) {
+        QApplication::clipboard()->setText(ui->Display->text());
+        ui->Display->clear();
+        return;
+    }
+
     int key = event->key();
 
     // ČÍSLA 0–9
