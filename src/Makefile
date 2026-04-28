@@ -20,6 +20,7 @@ STDDEV_DIR = profiling
 TEST_DIR = test
 CALC_DIR = calculator
 
+#==========================================#
 MATH_SRCS = $(wildcard $(MATH_LIB_DIR)/*.cpp)
 MATH_OBJS = $(MATH_SRCS:%.cpp=$(BUILD_DIR)/%.o)
 
@@ -51,7 +52,7 @@ $(MATH_LIB): $(MATH_OBJS)
 
 
 $(BUILD_DIR)/%.o: %.cpp
-	@mkdir -p $(dir $@)
+	mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
