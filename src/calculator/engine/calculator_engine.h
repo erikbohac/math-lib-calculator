@@ -9,6 +9,8 @@ class CalculatorEngine
 		static double evaluate(const std::string& expression);
 
 	private:
-		static std::string preprocess(const std::string& input);
+		static void preprocess_root(std::string& input);
+		static void preprocess_spaces(std::string& input);
+		static void preprocess_sign(std::string& input);
 };
 
