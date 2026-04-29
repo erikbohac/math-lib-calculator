@@ -87,7 +87,35 @@ std::vector<Token> Tokenizer::tokenize()
 		}
 		else if(c == '(')
 		{
+			size_t startPos = pos;
 			get();
+
+			if(pos < input.size() && input[pos] == '-')
+			{
+				size_t backup = pos;
+				get();
+
+				if(pos < input.size() && (isdigit(input[pos]) || input[pos] == '.'))
+				{
+					size_t numStart = pos;
+					Token num = parseNumber();
+
+					if(pos < input.size() && input[pos] == ')')
+					{
+						get();
+						num.value = -num.value;
+						tokens.push_back(num);
+						prevType = TokenType::Number;
+						continue;
+					}
+					pos = numStart;
+				}
+				pos = backup;
+			}
+
+			pos = startPos;
+			get();
+
 			tokens.push_back({TokenType::LParen, 0, 0});
 			prevType = TokenType::LParen;
 		}

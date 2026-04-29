@@ -10,6 +10,7 @@ double CalculatorEngine::evaluate(const std::string& expression)
 	std::string normalized = expression;
 	CalculatorEngine::preprocess_root(normalized);
 	CalculatorEngine::preprocess_spaces(normalized);
+	CalculatorEngine::preprocess_sign(normalized);
 
 	Tokenizer tokenizer(normalized);
 	auto tokens = tokenizer.tokenize();
