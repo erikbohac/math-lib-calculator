@@ -40,7 +40,7 @@ CALC_BUILD_DIR := $(BUILD_DIR)/$(CALC_DIR)
 MATH_LIB_ABS_PATH := $(abspath $(MATH_LIB))
 INCLUDE_ABS_DIR := $(abspath $(INCLUDE_DIR))
 
-.PHONY = all clean test stddev help doc calculator  #pack run
+.PHONY = all clean test stddev help doc calculator pack run
 
 
 all: $(MATH_LIB) test stddev calculator
@@ -90,8 +90,9 @@ calculator: $(MATH_LIB)
 	cmake --build $(CALC_BUILD_DIR)
 
 
-#run
+run: calculator
+	./$(CALC_BUILD_DIR)/$(CALC_NAME)
 
 
-#pack
+pack:
 

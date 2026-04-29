@@ -39,11 +39,11 @@ long double divide(long double a, long double b)
 long double factorial(long double a)
 {
 	if (fmod(a, 1) != 0){
-		std::domain_error("Unexpected factorial input");
+		throw std::domain_error("Unexpected factorial input");
 	}
 	if (a < 0)
 	{
-		throw std::domain_error("Negative number error"); /**< Factorial is not defined for negative numbers */
+		throw std::domain_error("Negative factorial number error"); /**< Factorial is not defined for negative numbers */
 	}
 	if(a > 10000)
 	{
