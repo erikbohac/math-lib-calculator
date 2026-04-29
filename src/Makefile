@@ -1,4 +1,4 @@
-CXX = g++
+CXX = g++ -g
 INCLUDE_DIR = .
 CXXFLAGS = -Wall -Wextra -pedantic --std=c++23 -I$(INCLUDE_DIR)
 GTESTFLAGS = -lgtest -lgtest_main -pthread
@@ -20,7 +20,7 @@ STDDEV_DIR = profiling
 TEST_DIR = test
 CALC_DIR = calculator
 
-#==========================================#
+
 MATH_SRCS = $(wildcard $(MATH_LIB_DIR)/*.cpp)
 MATH_OBJS = $(MATH_SRCS:%.cpp=$(BUILD_DIR)/%.o)
 
@@ -43,7 +43,7 @@ INCLUDE_ABS_DIR := $(abspath $(INCLUDE_DIR))
 .PHONY = all clean test stddev help doc calculator pack run
 
 
-all: $(MATH_LIB) test stddev calculator
+all: stddev calculator test
 
 
 $(MATH_LIB): $(MATH_OBJS)
@@ -95,4 +95,5 @@ run: calculator
 
 
 pack:
+	.
 
