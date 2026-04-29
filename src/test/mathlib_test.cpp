@@ -1,13 +1,39 @@
+/**
+ * @file mathlib_test.cpp
+ * @brief Unit tests for the core math library functions.
+ *
+ * This file contains a comprehensive suite of unit tests for mathematical
+ * operations implemented in core/mathlib.h. It verifies correctness for:
+ * - basic arithmetic (addition, subtraction, multiplication, division)
+ * - advanced operations (power, root, factorial, modulo)
+ * - edge cases (negative inputs, zero division, overflow boundaries)
+ * - decimal precision behavior with tolerance-based comparisons
+ *
+ * The tests are written using Google Test framework and validate both
+ * correctness and numerical stability across a wide range of inputs.
+ *
+ * @author Erik Boháč
+ */
+
 #include <gtest/gtest.h>
 #include <stdexcept>
 #include <climits>
 #include "core/mathlib.h"
 
 
+/// Exact comparison tolerance
 constexpr long double TOL_EXACT = 0.0L;
+
+/// Small floating-point tolerance
 constexpr long double TOL_SMALL = 1e-12L;
+
+/// Medium floating-point tolerance
 constexpr long double TOL_MED   = 1e-9L;
+
+/// Large floating-point tolerance
 constexpr long double TOL_LARGE = 1e-6L;
+
+/// Very large tolerance for extreme values
 constexpr long double TOL_HUGE  = 1e-3L;
 
 
