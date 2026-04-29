@@ -1,5 +1,5 @@
 /**
- * @file main.cpp
+ * @file stddev.cpp
  * @brief Computes the standard deviation of a sequence of numbers from standard input.
  *
  * This program reads a sequence of numbers from standard input and computes
