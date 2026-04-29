@@ -5,6 +5,7 @@ GTESTFLAGS = -lgtest -lgtest_main -pthread
 LDLIBS = -lm
 
 BUILD_DIR = build
+PACK_DIR = ../xbohace00_xdusbad00_xkadlep00
 
 DOXY_OUT = $(BUILD_DIR)/docs
 DOXYFILE = Doxyfile
@@ -20,7 +21,7 @@ STDDEV_DIR = profiling
 TEST_DIR = test
 CALC_DIR = calculator
 
-#==========================================#
+
 MATH_SRCS = $(wildcard $(MATH_LIB_DIR)/*.cpp)
 MATH_OBJS = $(MATH_SRCS:%.cpp=$(BUILD_DIR)/%.o)
 
@@ -40,10 +41,10 @@ CALC_BUILD_DIR := $(BUILD_DIR)/$(CALC_DIR)
 MATH_LIB_ABS_PATH := $(abspath $(MATH_LIB))
 INCLUDE_ABS_DIR := $(abspath $(INCLUDE_DIR))
 
-.PHONY = all clean test stddev help doc calculator  #pack run
+.PHONY = all clean test stddev help doc calculator pack run
 
 
-all: $(MATH_LIB) test stddev calculator
+all: stddev calculator test
 
 
 $(MATH_LIB): $(MATH_OBJS)
@@ -90,8 +91,8 @@ calculator: $(MATH_LIB)
 	cmake --build $(CALC_BUILD_DIR)
 
 
-#run
+run: calculator
+	./$(CALC_BUILD_DIR)/$(CALC_NAME)
 
 
-#pack
-
+#pack:
