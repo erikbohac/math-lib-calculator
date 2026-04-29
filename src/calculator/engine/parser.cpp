@@ -38,6 +38,7 @@ std::vector<Token> Parser::toRPN()
 	std::vector<Token> output;
 	std::stack<Token> ops;
 	TokenType prevType = TokenType::Operator;
+	bool prevFact = false;
 
 	for(const auto& token : tokens)
 	{
@@ -53,7 +54,7 @@ std::vector<Token> Parser::toRPN()
 		}
 		else if(token.type == TokenType::Operator)
 		{
-			if(prevType == TokenType::Operator && token.op != '!')
+			if(prevType == TokenType::Operator && token.op != '!' && !prevFact)
 			{
 				throw std::runtime_error(std::string("Unexpected operator '") + token.op + "'");
 			}
@@ -72,6 +73,13 @@ std::vector<Token> Parser::toRPN()
 					break;
 				}
 			}
+
+			prevFact = false;
+			if(token.op == '!')
+			{
+				prevFact = true;
+			}
+
 			ops.push(token);
 			prevType = TokenType::Operator;
 		}

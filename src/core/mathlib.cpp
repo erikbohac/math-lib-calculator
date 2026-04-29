@@ -39,11 +39,15 @@ long double divide(long double a, long double b)
 long double factorial(long double a)
 {
 	if (fmod(a, 1) != 0){
-		std::domain_error("Not an integer");
+		std::domain_error("Unexpected factorial input");
 	}
 	if (a < 0)
 	{
 		throw std::domain_error("Negative number error"); /**< Factorial is not defined for negative numbers */
+	}
+	if(a > 10000)
+	{
+		throw std::domain_error("Too large number to factorial");
 	}
 	else if (a == 0 || a == 1)
 	{
@@ -60,7 +64,7 @@ long double power(long double a, long double b)
 {
 	if (a == 0 && b == 0)
 	{
-		throw std::domain_error("Undefined operation");
+		throw std::domain_error("Undefined power operation");
 	}
 	if (fmod(b, 1) == 0)
 	{
@@ -68,7 +72,7 @@ long double power(long double a, long double b)
 	}
 	else
 	{
-		throw std::domain_error("Not an integer");
+		throw std::domain_error("Unexpected power input");
 	}
 }
 
