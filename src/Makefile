@@ -5,6 +5,7 @@ GTESTFLAGS = -lgtest -lgtest_main -pthread
 LDLIBS = -lm
 
 BUILD_DIR = build
+PACK_DIR = ../xbohace00_xdusbad00_xkadlep00
 
 DOXY_OUT = $(BUILD_DIR)/docs
 DOXYFILE = Doxyfile
@@ -94,6 +95,4 @@ run: calculator
 	./$(CALC_BUILD_DIR)/$(CALC_NAME)
 
 
-pack:
-	.
-
+#pack:
