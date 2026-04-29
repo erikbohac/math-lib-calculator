@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Calc
+Comment=Calculator with custom mathematical library
+Exec=/usr/local/bin/Calc
+Icon=Calc
+Terminal=false
+Categories=Utility;Calculator;

@@ -20,6 +20,11 @@ STDDEV_DIR = profiling
 TEST_DIR = test
 CALC_DIR = calculator
 
+PREFIX ?= /usr/local
+BINDIR = $(PREFIX)/bin
+APPDIR = $(PREFIX)/share/applications
+ICONDIR = $(PREFIX)/share/icons/hicolor/256x256/apps
+
 #==========================================#
 MATH_SRCS = $(wildcard $(MATH_LIB_DIR)/*.cpp)
 MATH_OBJS = $(MATH_SRCS:%.cpp=$(BUILD_DIR)/%.o)
@@ -40,7 +45,7 @@ CALC_BUILD_DIR := $(BUILD_DIR)/$(CALC_DIR)
 MATH_LIB_ABS_PATH := $(abspath $(MATH_LIB))
 INCLUDE_ABS_DIR := $(abspath $(INCLUDE_DIR))
 
-.PHONY = all clean test stddev help doc calculator  #pack run
+.PHONY: all clean test stddev help calculator install uninstall pack
 
 
 all: $(MATH_LIB) test stddev calculator
@@ -88,6 +93,26 @@ calculator: $(MATH_LIB)
 		-DMATH_LIB=$(MATH_LIB_ABS_PATH) \
 		-DINCLUDE_DIR=$(INCLUDE_ABS_DIR)
 	cmake --build $(CALC_BUILD_DIR)
+
+install: calculator
+	install -d $(DESTDIR)$(BINDIR)
+	install -m 755 $(CALC_BUILD_DIR)/$(CALC_NAME) $(DESTDIR)$(BINDIR)/$(CALC_NAME)
+
+	install -d $(DESTDIR)$(APPDIR)
+	install -m 644 installer/$(CALC_NAME).desktop $(DESTDIR)$(APPDIR)/$(CALC_NAME).desktop
+
+	@if [ -f installer/$(CALC_NAME).png ]; then \
+		install -d $(DESTDIR)$(ICONDIR); \
+		install -m 644 installer/$(CALC_NAME).png $(DESTDIR)$(ICONDIR)/$(CALC_NAME).png; \
+	fi
+
+uninstall:
+	rm -f $(DESTDIR)$(BINDIR)/$(CALC_NAME)
+	rm -f $(DESTDIR)$(APPDIR)/$(CALC_NAME).desktop
+	rm -f $(DESTDIR)$(ICONDIR)/$(CALC_NAME).png
+
+pack:
+	./installer/build_deb.sh
 
 
 #run

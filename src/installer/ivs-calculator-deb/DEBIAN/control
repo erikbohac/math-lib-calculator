@@ -1,0 +1,10 @@
+Package: ivs-calculator
+Version: 1.0
+Section: utils
+Priority: optional
+Architecture: amd64
+Maintainer: IVS Team <team@example.com>
+Depends: libqt6widgets6
+Description: Calculator with custom mathematical library
+ A simple calculator application created as a school project.
+ The application uses its own mathematical library.
