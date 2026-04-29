@@ -1,4 +1,4 @@
-CXX = g++ -g
+CXX = g++
 INCLUDE_DIR = .
 CXXFLAGS = -Wall -Wextra -pedantic --std=c++23 -I$(INCLUDE_DIR)
 GTESTFLAGS = -lgtest -lgtest_main -pthread

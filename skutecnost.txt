@@ -1,0 +1,11 @@
+Skutečnost vs. plán
+
+Na začátku projektu probíhaly jednotlivé fáze relativně podle plánovaného harmonogramu.
+Vytvoření repozitáře, sepsání plánu, Makefile i první testy byly dokončeny v blízkých termínech dle očekávání.
+
+K větším odchylkám došlo především ve fázi tvorby GUI a následné integrace s matematickou knihovnou.
+Matematický engine se ukázal být složitější, než bylo původně odhadováno, což vedlo ke zpoždění navazujících prací.
+Z tohoto důvodu se posunuly i navazující termíny.
+
+Ná konec se prácí podařilo dohnat, nicméně některé úkoly již nebyly realizovány přesně podle původního plánu.
+Celkově lze říci, že projekt byl dokončen, ale s časovými odchylkami způsobenými zejména vyšší než očekávanou složitostí matematického enginu.

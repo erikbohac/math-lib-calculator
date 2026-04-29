@@ -1,3 +1,3 @@
-xbohace00 100
-xdusbad00 100
-xkadlep00 100
+xbohace00 100 (sprava git, auto. testy, makefile, integrace GUI/mat. knihovna)
+xdusbad00 100 (instalator, manual, profiling)
+xkadlep00 100 (mat. knihovna, GUI, mockup)
