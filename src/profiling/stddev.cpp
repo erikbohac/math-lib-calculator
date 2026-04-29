@@ -1,44 +1,64 @@
+/**
+ * @file main.cpp
+ * @brief Computes the standard deviation of a sequence of numbers from standard input.
+ *
+ * This program reads a sequence of numbers from standard input and computes
+ * their standard deviation using helper mathematical functions provided in
+ * core/mathlib.h.
+ *
+ * The computation is done step-by-step using:
+ * - sum of values
+ * - sum of squared values
+ * - arithmetic mean
+ * - variance and square root
+ *
+ * @author Dominik Dusbaba
+ */
+
 #include <iostream>
 #include "core/mathlib.h"
 
 int main()
 {
 	long double x = 0;
-	//soucet vsech cisel do jednoho
+
+	/// Sum of all input numbers
 	long double sum = 0;
-	//soucet vsech cisel s druhou mocninou
+
+	/// Sum of squares of all input numbers
 	long double sum2 = 0;
-	//pocet nactenych cisel
+
+	/// Number of input values
 	long double n = 0;
-	//aritmeticky prumer
+
+	/// Arithmetic mean of input values
 	long double avg = 0;
-	//výsledek(smerodatna odchylka)
+
+	/// Final result (standard deviation)
 	long double result = 0;
 
-	// nacitani cisel ze vstupu
-	while (std::cin >> x){
-		n = add(n,1);
+	// Reading numbers from standard input
+	while (std::cin >> x)
+	{
+		n = add(n, 1);
 		sum = add(sum, x);
-		sum2= add(sum2, multiply(x, x));
+		sum2 = add(sum2, multiply(x, x));
 	}
 
-	//musi byt aspon 2 cisla
-	if (n<2){
+	// At least 2 numbers are required
+	if (n < 2)
+	{
 		return 1;
 	}
 
-	//prumer
+	// Compute arithmetic mean
 	avg = divide(sum, n);
 
-	//smerodatna odchylka
-	result = divide(
-			subtract(sum2, multiply(n,multiply(avg,avg))),
-			subtract(n,1)
-			);
-
+	// Compute variance and standard deviation
+	result = divide(subtract(sum2, multiply(n, multiply(avg, avg))),subtract(n, 1));
 	result = root(result, 2);
 
-	//vypis vysledku
+	// Output result
 	std::cout << result << std::endl;
 
 	return 0;
