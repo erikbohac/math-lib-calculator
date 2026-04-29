@@ -29,12 +29,31 @@ void Tokenizer::skipWhitespace()
 Token Tokenizer::parseNumber()
 {
 	size_t start = pos;
+	bool hasDot = false;
+
 	while(isdigit(read()) || read() == '.')
 	{
+		if(read() == '.')
+		{
+			if(hasDot)
+			{
+				throw std::runtime_error("Invalid number format at position " + std::to_string(pos));
+			}
+			hasDot = true;
+		}
 		get();
 	}
 
-	return Token::number(std::stod(input.substr(start, pos - start)));
+	std::string str = input.substr(start, pos - start);
+
+	try
+	{
+		return Token::number(std::stod(str));
+	}
+	catch(...)
+	{
+		throw std::runtime_error("Failed to parse number at position " + std::to_string(start));
+	}
 }
 
 std::vector<Token> Tokenizer::tokenize()
@@ -80,7 +99,7 @@ std::vector<Token> Tokenizer::tokenize()
 		}
 		else
 		{
-			throw std::runtime_error("Invalid character");
+			throw std::runtime_error(std::string("Invalid character '") + c + "' at position " + std::to_string(pos));
 		}
 	}
 

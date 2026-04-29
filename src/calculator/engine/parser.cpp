@@ -1,5 +1,6 @@
 #include "parser.h"
 #include <stack>
+#include <stdexcept>
 
 
 Parser::Parser(const std::vector<Token>& tokens) : tokens(tokens)
@@ -36,20 +37,32 @@ std::vector<Token> Parser::toRPN()
 {
 	std::vector<Token> output;
 	std::stack<Token> ops;
+	TokenType prevType = TokenType::Operator;
 
-	for(const auto& t : tokens)
+	for(const auto& token : tokens)
 	{
-		if(t.type == TokenType::Number)
+		if(token.type == TokenType::Number)
 		{
-			output.push_back(t);
+			if(prevType == TokenType::Number || prevType == TokenType::RParen)
+			{
+				throw std::runtime_error("Missing operator between values");
+			}
+
+			output.push_back(token);
+			prevType = TokenType::Number;
 		}
-		else if(t.type == TokenType::Operator)
+		else if(token.type == TokenType::Operator)
 		{
+			if(prevType == TokenType::Operator && token.op != '!')
+			{
+				throw std::runtime_error(std::string("Unexpected operator '") + token.op + "'");
+			}
+
 			while(!ops.empty() && ops.top().type == TokenType::Operator)
 			{
 				char o2 = ops.top().op;
 
-				if((!isRightAssociative(t.op) && precedence(t.op) <= precedence(o2)) || (isRightAssociative(t.op) && precedence(t.op) < precedence(o2)))
+				if((!isRightAssociative(token.op) && precedence(token.op) <= precedence(o2)) || (isRightAssociative(token.op) && precedence(token.op) < precedence(o2)))
 				{
 					output.push_back(ops.top());
 					ops.pop();
@@ -59,25 +72,45 @@ std::vector<Token> Parser::toRPN()
 					break;
 				}
 			}
-			ops.push(t);
+			ops.push(token);
+			prevType = TokenType::Operator;
 		}
-		else if(t.type == TokenType::LParen)
+		else if(token.type == TokenType::LParen)
 		{
-			ops.push(t);
+			ops.push(token);
+			prevType = TokenType::LParen;
 		}
-		else if(t.type == TokenType::RParen)
+		else if(token.type == TokenType::RParen)
 		{
-			while(!ops.empty() && ops.top().type != TokenType::LParen)
+			bool found = false;
+
+			while(!ops.empty())
 			{
+				if(ops.top().type == TokenType::LParen)
+				{
+					found = true;
+					ops.pop();
+					break;
+				}
 				output.push_back(ops.top());
 				ops.pop();
 			}
-			ops.pop();
-		}
+
+			if(!found)
+			{
+				throw std::runtime_error("Mismatched parentheses");
+			}
+
+			prevType = TokenType::RParen;		}
 	}
 
 	while(!ops.empty())
 	{
+		if(ops.top().type == TokenType::LParen)
+		{
+			throw std::runtime_error("Mismatched parentheses");
+		}
+
 		output.push_back(ops.top());
 		ops.pop();
 	}
